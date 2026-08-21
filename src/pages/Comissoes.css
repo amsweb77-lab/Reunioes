@@ -1,0 +1,106 @@
+.comissoes-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.comissoes-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.comissoes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comissao-card {
+  cursor: pointer;
+  padding: 1.25rem;
+  border-left: 4px solid transparent;
+}
+
+.comissao-card:hover {
+  border-left-color: var(--color-border);
+}
+
+.comissao-card.active {
+  border-left-color: var(--color-primary);
+  background-color: var(--color-bg-main);
+}
+
+.c-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.c-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.c-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background-color: var(--color-border);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.c-tema {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.detail-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1rem;
+}
+
+.add-membro-box {
+  display: flex;
+  gap: 1rem;
+  background-color: var(--color-bg-main);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.flex-1 { flex: 1; }
+.papel-select { width: 150px; }
+.mt-4 { margin-top: 1.5rem; }
+
+.role-badge {
+  display: inline-flex;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: var(--color-bg-main);
+  color: var(--color-text-muted);
+}
+
+.role-badge.primary {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-hover);
+}
+
+.text-danger { color: var(--color-danger) !important; }

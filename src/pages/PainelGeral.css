@@ -1,0 +1,182 @@
+.painel-geral-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  border: 1px solid #ccc;
+}
+
+.spreadsheet-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 9.5px; /* Fonte menor para caber na tela sem scroll */
+}
+
+.spreadsheet-table th, .spreadsheet-table td {
+  padding: 4px 2px;
+  border-bottom: 1px solid #ccc;
+  height: 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spreadsheet-table th {
+  white-space: normal;
+  line-height: 1.1;
+}
+
+.spreadsheet-table td {
+  white-space: nowrap;
+}
+
+.spreadsheet-table .border-r {
+  border-right: 1px solid #ccc;
+}
+
+.header-cell {
+  background-color: #e0e0e0;
+  border-right: 1px solid #ccc;
+  border-bottom: 2px solid #999;
+  font-weight: bold;
+  color: #333;
+}
+
+.bg-gray-light {
+  background-color: #f5f5f5;
+}
+
+.spreadsheet-table .sticky-col {
+  position: sticky;
+  left: 0;
+  background-color: #fff;
+  z-index: 10;
+}
+
+.spreadsheet-table th.sticky-col {
+  background-color: #e0e0e0;
+  z-index: 20;
+}
+
+/* Larguras fixas e z-index corretos para as colunas congeladas */
+.spreadsheet-table td.sticky-col:nth-child(1), .spreadsheet-table th.sticky-col:nth-child(1) { left: 0; width: 25px; min-width: 25px; max-width: 25px; }
+.spreadsheet-table td.sticky-col:nth-child(2), .spreadsheet-table th.sticky-col:nth-child(2) { left: 25px; width: 65px; min-width: 65px; max-width: 65px; }
+.spreadsheet-table td.sticky-col:nth-child(3), .spreadsheet-table th.sticky-col:nth-child(3) { left: 90px; width: 160px; min-width: 160px; max-width: 160px; }
+.spreadsheet-table td:nth-child(4), .spreadsheet-table th:nth-child(4) { border-left: 1px solid #ccc; width: 130px; min-width: 130px; max-width: 130px; } /* Limitar largura do representante */
+.spreadsheet-table td:nth-child(5), .spreadsheet-table th:nth-child(5) { width: 90px; min-width: 90px; max-width: 90px; } /* Cargo */
+
+.inactive-row td {
+  color: #999;
+}
+
+.text-green-dark {
+  color: #38761d;
+}
+
+.text-danger {
+  color: #cc0000;
+}
+
+.select-status {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  outline: none;
+  padding: 0;
+}
+
+.select-status:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* Cores das células de relatórios */
+.cell-red {
+  background-color: #ff0000;
+  border-right: 1px solid #ccc;
+}
+
+.cell-green {
+  background-color: #6aa84f;
+  color: #fff;
+  border-right: 1px solid #ccc;
+}
+
+.cell-delivered-ativ {
+  background-color: #0b57d0;
+  color: #fff;
+  border-right: 1px solid #ccc;
+}
+
+.cell-delivered-estat {
+  background-color: #f6b26b;
+  color: #fff;
+  border-right: 1px solid #ccc;
+}
+
+.cell-delivered-ata {
+  background-color: #6aa84f;
+  color: #fff;
+  border-right: 1px solid #ccc;
+}
+
+.cell-orange {
+  background-color: #f6b26b;
+  border-right: 1px solid #ccc;
+}
+
+.cell-reenvio {
+  background-color: #ffd966;
+  color: #333;
+  border-right: 1px solid #ccc;
+}
+
+.cell-white {
+  background-color: #ffffff;
+  border-right: 1px solid #ccc;
+}
+
+.cell-blueish {
+  background-color: #f3f8fc; /* Fundo azul claro para áreas neutras */
+}
+
+/* Campos de Input transparentes simulando planilha */
+.input-qty {
+  width: 100%;
+  height: 100%;
+  min-height: 23px;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: bold;
+  color: #333;
+  outline: none;
+}
+
+.input-qty:hover, .input-qty:focus {
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* Esconder as setinhas do input number */
+.input-qty::-webkit-outer-spin-button,
+.input-qty::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-qty[type=number] {
+  -moz-appearance: textfield;
+}

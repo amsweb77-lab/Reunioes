@@ -1,0 +1,304 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer,
+  PieChart, Pie, Cell
+} from 'recharts';
+import { Users, FileText, CheckCircle, PieChart as PieChartIcon } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { confederacoesData, delegadosData, entregasData, regioesData } from '../data/mockDatabase';
+import './Dashboard.css';
+
+export default function Dashboard() {
+  const [loading, setLoading] = useState(true);
+  const [dbData, setDbData] = useState(null);
+
+  useEffect(() => {
+    async function fetchDashboardData() {
+      try {
+        const { data: confeds, error: e1 } = await supabase.from('confederacoes').select('*');
+        const { data: delegados, error: e2 } = await supabase.from('delegados').select('*');
+        const { data: entregas, error: e3 } = await supabase.from('entregas').select('*');
+        const { data: regioesDb, error: e4 } = await supabase.from('regioes').select('*');
+
+        if (!e1 && !e2 && !e3 && confeds && confeds.length > 0) {
+          setDbData({ confeds, delegados, entregas, regioesDb: regioesDb || [] });
+          setLoading(false);
+          return;
+        }
+      } catch (err) {
+        // Silently catch supabase errors
+      }
+
+      // FALLBACK LOCAL: Traduz os dados do localStorage/mock para o novo formato relacional
+      const storedTable = JSON.parse(localStorage.getItem('painelTableData'));
+      const storedDiretoria = JSON.parse(localStorage.getItem('painelDiretoriaData'));
+      const storedSecretarios = JSON.parse(localStorage.getItem('painelSecretariosData'));
+
+      let fbConfeds = confederacoesData;
+      let fbDelegados = delegadosData;
+      let fbEntregas = entregasData.map(e => ({ ...e, confederacao_sigla: e.confederacao }));
+
+      if (storedTable) {
+        fbConfeds = storedTable.map(c => ({
+          id: c.id, regiao: c.regiao, nome: c.nome, sigla: c.sigla, ativa: c.ativa
+        }));
+        
+        const tableDelegados = storedTable.filter(c => c.delegado).map(c => c.delegado);
+        fbDelegados = [
+          ...tableDelegados,
+          ...(storedDiretoria || delegadosData.filter(d => d.tipo === 'CNHP' && !d.cargo.startsWith('Sec.'))),
+          ...(storedSecretarios || delegadosData.filter(d => d.tipo === 'CNHP' && d.cargo.startsWith('Sec.')))
+        ];
+        
+        fbEntregas = storedTable.map(c => ({
+          id: c.id,
+          confederacao_sigla: c.sigla,
+          rel_ativ: c.docs.rel_ativ,
+          rel_estat: c.docs.rel_estat,
+          livro_ata: c.docs.livro_ata,
+          consulta: c.docs.consulta,
+          proposta: c.docs.proposta,
+          hpp: c.docs.hpp
+        }));
+      }
+
+      setDbData({ confeds: fbConfeds, delegados: fbDelegados, entregas: fbEntregas, regioesDb: regioesData });
+      setLoading(false);
+    }
+    fetchDashboardData();
+  }, []);
+
+  if (loading) {
+    return <div className="p-8 text-center text-muted">Carregando dados...</div>;
+  }
+
+  if (!dbData) {
+    return <div className="p-8 text-center text-danger font-bold">Erro ao carregar dados.</div>;
+  }
+
+  const { confeds, delegados, entregas, regioesDb } = dbData;
+
+  // --- PANORAMA GERAL ---
+  const confedAtivas = confeds.filter(c => c.ativa).length; 
+  const totalDiretoria = delegados.filter(d => d.tipo === 'CNHP' && !d.cargo.startsWith('Sec.')).length;
+  const totalSecretarios = 0; // Forçado a 0 pois não participam desta reunião
+  
+  const totalMembrosCE = confedAtivas + totalDiretoria + totalSecretarios;
+  const quorum = Math.round(totalMembrosCE / 2) + 1;
+  
+  const confedsConfirmados = delegados.filter(d => d.tipo === 'SINODAL' && d.confirmou).length;
+  const diretoriaConfirmados = delegados.filter(d => d.tipo === 'CNHP' && !d.cargo.startsWith('Sec.') && d.confirmou).length;
+  const secretariosConfirmados = 0; // Forçado a 0 pois não participam desta reunião
+
+  const totalPresencasConfirmadas = confedsConfirmados + diretoriaConfirmados + secretariosConfirmados;
+
+  // --- CONTROLE DE PRESENÇA ---
+  const presentesDiretoria = delegados.filter(d => d.tipo === 'CNHP' && !d.cargo.startsWith('Sec.') && d.presente).length;
+  const presentesSecretarios = 0; // Forçado a 0 pois não participam desta reunião
+  const presentesSinodais = delegados.filter(d => d.tipo === 'SINODAL' && d.presente).length;
+  const totalPresentes = presentesDiretoria + presentesSecretarios + presentesSinodais;
+
+  // --- PRESENÇA POR REGIÃO ---
+  const regioesNomes = regioesDb.length > 0 ? regioesDb.map(r => r.nome) : ['Centro-Oeste', 'Nordeste', 'Norte I', 'Norte II', 'Sudeste I', 'Sudeste II', 'Sul'];
+  const presencaPorRegiao = regioesNomes.map(regiao => {
+    const totalRegiao = confeds.filter(c => c.ativa && c.regiao === regiao).length;
+    const inscritosRegiao = delegados.filter(d => d.tipo === 'SINODAL' && d.regiao === regiao && d.confirmou).length;
+    const presentesRegiao = delegados.filter(d => d.tipo === 'SINODAL' && d.regiao === regiao && d.presente).length;
+      
+    return {
+      name: regiao,
+      Inscritos: inscritosRegiao,
+      Presentes: presentesRegiao,
+      Total: totalRegiao
+    };
+  });
+
+  // --- DOCUMENTOS RECEBIDOS ---
+  const isDelivered = (val) => val === 'green';
+
+  const relatAtivSinodais = entregas.filter(e => isDelivered(e.rel_ativ) && confeds.find(c => c.sigla === e.confederacao_sigla && c.ativa)).length;
+  const relatEstatSinodais = entregas.filter(e => isDelivered(e.rel_estat) && confeds.find(c => c.sigla === e.confederacao_sigla && c.ativa)).length;
+  const livroAtas = entregas.filter(e => isDelivered(e.livro_ata) && confeds.find(c => c.sigla === e.confederacao_sigla && c.ativa)).length;
+  
+  const consultas = entregas.reduce((acc, curr) => acc + (curr.consulta || 0), 0);
+  const propostas = entregas.reduce((acc, curr) => acc + (curr.proposta || 0), 0);
+  const indHpp = entregas.reduce((acc, curr) => acc + (curr.hpp || 0), 0);
+  
+  const totalDocumentos = relatAtivSinodais + relatEstatSinodais + livroAtas + consultas + propostas + indHpp;
+
+  const docChartData = [
+    { name: 'Atividades', value: relatAtivSinodais },
+    { name: 'Estatística', value: relatEstatSinodais },
+    { name: 'Livro de Atas', value: livroAtas },
+    { name: 'Consultas', value: consultas },
+    { name: 'Propostas', value: propostas },
+    { name: 'HPP', value: indHpp }
+  ];
+
+  const COLORS = ['#0b57d0', '#f6b26b', '#6aa84f', '#e06666', '#8e7cc3', '#3d85c6'];
+
+  return (
+    <div className="dashboard">
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Dashboard Analítico</h1>
+          <p className="page-subtitle">Acompanhamento em tempo real do Quórum e Entregas</p>
+        </div>
+      </div>
+
+      <div className="dashboard-grid">
+        
+        {/* COLUNA ESQUERDA: Tabelas Clássicas */}
+        <div className="dashboard-left">
+          
+          <div className="card mb-4">
+            <div className="card-header bg-gray-light font-bold">PANORAMA</div>
+            <div className="overflow-x-auto" style={{ padding: '0.5rem' }}>
+              <table className="w-full" style={{ borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #e0e0e0', color: '#5f6368', textAlign: 'center', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: '600' }}>Categoria</th>
+                    <th style={{ padding: '12px 8px', fontWeight: '600' }}>Total</th>
+                    <th style={{ padding: '12px 8px', fontWeight: '600' }}>Inscritos</th>
+                    <th style={{ padding: '12px 8px', fontWeight: '600' }}>Presentes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043' }}>Confederações Sinodais</td>
+                    <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: '500' }}>{confedAtivas}</span></td>
+                    <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e8f0fe', padding: '4px 10px', borderRadius: '12px', color: '#1967d2', fontWeight: 'bold' }}>{confedsConfirmados}</span></td>
+                    <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e6f4ea', padding: '4px 10px', borderRadius: '12px', color: '#137333', fontWeight: 'bold' }}>{presentesSinodais}</span></td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043' }}>Diretoria</td>
+                    <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: '500' }}>{totalDiretoria}</span></td>
+                    <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e8f0fe', padding: '4px 10px', borderRadius: '12px', color: '#1967d2', fontWeight: 'bold' }}>{diretoriaConfirmados}</span></td>
+                    <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e6f4ea', padding: '4px 10px', borderRadius: '12px', color: '#137333', fontWeight: 'bold' }}>{presentesDiretoria}</span></td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043' }}>Secretários de Ativ.</td>
+                    <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: '500' }}>{totalSecretarios}</span></td>
+                    <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e8f0fe', padding: '4px 10px', borderRadius: '12px', color: '#1967d2', fontWeight: 'bold' }}>{secretariosConfirmados}</span></td>
+                    <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e6f4ea', padding: '4px 10px', borderRadius: '12px', color: '#137333', fontWeight: 'bold' }}>{presentesSecretarios}</span></td>
+                  </tr>
+                  <tr style={{ borderTop: '2px solid #dadce0', backgroundColor: '#f8f9fa' }}>
+                    <td style={{ padding: '14px 16px', fontWeight: 'bold', color: '#202124' }}>TOTAL</td>
+                    <td style={{ padding: '14px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e8eaed', padding: '4px 12px', borderRadius: '16px', color: '#202124', fontWeight: 'bold' }}>{totalMembrosCE}</span></td>
+                    <td style={{ padding: '14px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#d2e3fc', padding: '4px 12px', borderRadius: '16px', color: '#174ea6', fontWeight: 'bold' }}>{totalPresencasConfirmadas}</span></td>
+                    <td style={{ padding: '14px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#ceead6', padding: '4px 12px', borderRadius: '16px', color: '#0d652d', fontWeight: 'bold' }}>{totalPresentes}</span></td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e6f4ea' }}>
+                    <td style={{ padding: '16px', color: '#137333', borderBottomLeftRadius: '8px' }}><strong>QUÓRUM MÍNIMO</strong></td>
+                    <td style={{ padding: '16px' }}></td>
+                    <td style={{ padding: '16px' }}></td>
+                    <td style={{ padding: '16px', textAlign: 'center', color: '#0d652d', borderBottomRightRadius: '8px' }}>
+                      <span style={{ backgroundColor: '#137333', color: 'white', padding: '6px 14px', borderRadius: '20px', fontWeight: 'bold', fontSize: '1.2rem', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                        {quorum}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="card">
+            <div className="card-header bg-gray-light font-bold">DOCUMENTOS RECEBIDOS</div>
+            <table className="w-full" style={{ borderCollapse: 'collapse', fontSize: '0.95rem' }}>
+              <tbody>
+                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Relat. Atividade Sinodais</td>
+                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{relatAtivSinodais}</span></td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Relat. de Estat. Sinodais</td>
+                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{relatEstatSinodais}</span></td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Livro de Atas</td>
+                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{livroAtas}</span></td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Consultas</td>
+                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{consultas}</span></td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Propostas</td>
+                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{propostas}</span></td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Indicação HPP</td>
+                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{indHpp}</span></td>
+                </tr>
+                <tr style={{ borderTop: '2px solid #dadce0', backgroundColor: '#f8f9fa' }}>
+                  <td style={{ padding: '14px 16px', fontWeight: 'bold', color: '#202124' }}>TOTAL</td>
+                  <td style={{ padding: '14px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#e8eaed', padding: '4px 12px', borderRadius: '16px', color: '#202124', fontWeight: 'bold' }}>{totalDocumentos}</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        {/* COLUNA DIREITA: Gráficos */}
+        <div className="dashboard-right">
+          
+          <div className="card mb-4 chart-card">
+            <div className="card-header">
+              <h3 className="font-bold flex items-center gap-2"><Users size={18} className="text-primary"/> Proporção de Inscritos vs Presentes por Região</h3>
+            </div>
+            <div className="chart-container" style={{ height: 260 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={presencaPorRegiao} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12}} />
+                  <YAxis axisLine={false} tickLine={false} />
+                  <RechartsTooltip cursor={{fill: '#f5f5f5'}} />
+                  <Legend />
+                  <Bar dataKey="Total" fill="#e0e0e0" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Inscritos" fill="#0b57d0" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Presentes" fill="#38761d" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div className="card chart-card">
+            <div className="card-header">
+              <h3 className="font-bold flex items-center gap-2"><PieChartIcon size={18} className="text-primary"/> Proporção de Documentos Recebidos</h3>
+            </div>
+            <div className="chart-container" style={{ height: 240 }}>
+              {docChartData.some(d => d.value > 0) ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={docChartData}
+                      cx="40%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={100}
+                      paddingAngle={2}
+                      dataKey="value"
+                    >
+                      {docChartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip />
+                    <Legend layout="vertical" verticalAlign="middle" align="right" wrapperStyle={{ fontSize: '12px' }}/>
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full text-muted">
+                  Nenhum documento recebido ainda.
+                </div>
+              )}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}

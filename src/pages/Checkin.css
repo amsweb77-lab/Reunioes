@@ -1,0 +1,234 @@
+.checkin-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.quorum-panel {
+  display: flex;
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+}
+
+.quorum-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.quorum-status {
+  flex: 2;
+  align-items: flex-start;
+  padding-left: 2rem;
+}
+
+.quorum-divider {
+  width: 1px;
+  background-color: var(--color-border);
+  margin: 0 1.5rem;
+}
+
+.q-label {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.q-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text-main);
+}
+
+.q-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.q-badge.success {
+  background-color: var(--color-success-light);
+  color: var(--color-success-dark);
+}
+
+.q-badge.warning {
+  background-color: var(--color-warning-light);
+  color: var(--color-warning);
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.checkin-card {
+  overflow: hidden;
+}
+
+.checkin-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: var(--color-bg-main);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.search-box {
+  flex: 1;
+  position: relative;
+}
+
+.search-lg {
+  width: 100%;
+  padding-left: 2.75rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 1rem;
+  border-radius: var(--radius-lg);
+}
+
+.search-box .search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+.checkin-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkin-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.checkin-row:hover {
+  background-color: var(--color-bg-main);
+}
+
+.checkin-row.is-present {
+  background-color: var(--color-success-light);
+}
+
+.checkin-row.is-present:hover {
+  background-color: #c6f6d5; /* Slightly darker success */
+}
+
+.c-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.c-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.is-present .c-avatar {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.c-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: 0.25rem;
+}
+
+.c-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.c-badge {
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.c-status {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.status-badge.error {
+  background-color: var(--color-danger-light);
+  color: var(--color-danger);
+}
+
+.status-badge.warning {
+  background-color: var(--color-warning-light);
+  color: var(--color-warning);
+}
+
+.btn-checkin {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.btn-checkin.active {
+  color: var(--color-success-dark);
+}
+
+.empty-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+}
+
+.checkin-row:hover .empty-circle {
+  border-color: var(--color-success);
+}
