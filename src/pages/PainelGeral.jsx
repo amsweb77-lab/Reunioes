@@ -26,6 +26,7 @@ export default function PainelGeral() {
         const { data: entregas, error: e3 } = await supabase.from('entregas').select('*');
 
         if (!e1 && !e2 && !e3 && confeds && confeds.length > 0) {
+          console.log('✅ Dados carregados com sucesso do Supabase!', confeds.length);
           const newTableData = confeds.sort((a, b) => a.id - b.id).map((conf, index) => {
             const delegado = delegados.find(d => d.tipo === 'SINODAL' && d.confederacao === conf.sigla);
             const entrega = entregas.find(e => e.confederacao_sigla === conf.sigla);
@@ -40,10 +41,11 @@ export default function PainelGeral() {
           setDiretoriaData(delegados.filter(d => d.tipo === 'CNHP' && !d.cargo.startsWith('Sec.')));
           setSecretariosData(delegados.filter(d => d.tipo === 'CNHP' && d.cargo.startsWith('Sec.')));
         } else {
+          console.error('⚠️ Falha ao carregar do Supabase. Erros:', {e1, e2, e3});
           loadLocalData();
         }
       } catch (error) {
-        console.error('Erro ao conectar ao Supabase:', error);
+        console.error('❌ Erro crítico ao conectar ao Supabase:', error);
         loadLocalData();
       }
       setLoading(false);
