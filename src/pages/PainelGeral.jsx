@@ -278,7 +278,7 @@ export default function PainelGeral() {
                   </select>
                 </th>
                 <th className="sticky-col header-cell">
-                  <div>CSHP</div>
+                  <div>Confederação Sinodal (CSHP)</div>
                   <select 
                     value={filtroCSHP || (ordemCSHP ? `SORT_${ordemCSHP.toUpperCase()}` : '')} 
                     onChange={e => {
