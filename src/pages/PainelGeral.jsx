@@ -174,6 +174,9 @@ export default function PainelGeral() {
   };
 
   const filteredData = tableData.filter(d => {
+    // Só mostra as confederações ativas
+    if (!d.ativa) return false;
+
     const nomeDel = d.delegado?.nome || '';
     const matchGlobal = d.nome.toLowerCase().includes(searchTerm.toLowerCase()) || 
                         d.sigla.toLowerCase().includes(searchTerm.toLowerCase()) ||
