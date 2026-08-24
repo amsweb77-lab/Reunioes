@@ -117,8 +117,10 @@ export default function Eventos() {
       setShowModal(false);
       resetForm();
     } catch (error) {
-      console.error('Erro ao salvar evento:', error);
-      alert('Erro ao salvar no banco. Salvando apenas localmente para fallback.');
+      console.error("Erro ao salvar evento no Supabase:", error);
+      
+      const erroMsg = error.message || JSON.stringify(error);
+      alert(`Erro do Supabase: ${erroMsg}\n\nSalvando apenas localmente para fallback.`);
       
       // Fallback local save
       const eventToSave = { ...formData, id: editingId || Date.now() };
