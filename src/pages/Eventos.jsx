@@ -32,14 +32,10 @@ export default function Eventos() {
       if (error) throw error;
       if (data) {
         setEventos(data);
-        localStorage.setItem('eventosData', JSON.stringify(data));
       }
     } catch (error) {
-      console.warn('Usando dados locais de eventos.', error);
-      const localData = localStorage.getItem('eventosData');
-      if (localData) {
-        setEventos(JSON.parse(localData));
-      }
+      console.error('Erro ao buscar do Supabase:', error);
+      setEventos([]);
     } finally {
       setLoading(false);
     }
