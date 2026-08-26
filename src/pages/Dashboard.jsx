@@ -114,28 +114,55 @@ export default function Dashboard() {
   });
 
   // --- DOCUMENTOS RECEBIDOS ---
-  const isDelivered = (val) => val === 'green';
+  const countDocs = (field) => {
+    let entregue = 0, reenvio = 0, naoEntregue = 0, naoPrecisa = 0;
+    entregas.forEach(e => {
+      const confed = confeds.find(c => c.sigla === e.confederacao_sigla && c.ativa);
+      if (confed) {
+        if (e[field] === true || e[field] === 'green') entregue++;
+        else if (e[field] === 'orange') reenvio++;
+        else if (e[field] === 'white') naoPrecisa++;
+        else naoEntregue++; // red, false, null, undefined
+      }
+    });
+    return { entregue, reenvio, naoEntregue, naoPrecisa, total: confedAtivas };
+  };
 
-  const relatAtivSinodais = entregas.filter(e => isDelivered(e.rel_ativ) && confeds.find(c => c.sigla === e.confederacao_sigla && c.ativa)).length;
-  const relatEstatSinodais = entregas.filter(e => isDelivered(e.rel_estat) && confeds.find(c => c.sigla === e.confederacao_sigla && c.ativa)).length;
-  const livroAtas = entregas.filter(e => isDelivered(e.livro_ata) && confeds.find(c => c.sigla === e.confederacao_sigla && c.ativa)).length;
+  const ativ = countDocs('rel_ativ');
+  const estat = countDocs('rel_estat');
+  const atas = countDocs('livro_ata');
   
   const consultas = entregas.reduce((acc, curr) => acc + (curr.consulta || 0), 0);
   const propostas = entregas.reduce((acc, curr) => acc + (curr.proposta || 0), 0);
   const indHpp = entregas.reduce((acc, curr) => acc + (curr.hpp || 0), 0);
-  
-  const totalDocumentos = relatAtivSinodais + relatEstatSinodais + livroAtas + consultas + propostas + indHpp;
 
   const docChartData = [
-    { name: 'Atividades', value: relatAtivSinodais },
-    { name: 'Estatística', value: relatEstatSinodais },
-    { name: 'Livro de Atas', value: livroAtas },
+    { name: 'Atividades', value: ativ.entregue },
+    { name: 'Estatística', value: estat.entregue },
+    { name: 'Livro de Atas', value: atas.entregue },
     { name: 'Consultas', value: consultas },
     { name: 'Propostas', value: propostas },
     { name: 'HPP', value: indHpp }
   ];
 
   const COLORS = ['#0b57d0', '#f6b26b', '#6aa84f', '#e06666', '#8e7cc3', '#3d85c6'];
+
+  const Badge = ({ val, type }) => {
+    if (val === 0 && type !== 'total') return <span style={{ color: '#dadce0' }}>-</span>;
+    
+    let bg = '#f1f3f4', color = '#5f6368', fw = '500';
+    if (type === 'green') { bg = '#e6f4ea'; color = '#137333'; fw = 'bold'; }
+    else if (type === 'red') { bg = '#fce8e6'; color = '#c5221f'; fw = 'bold'; }
+    else if (type === 'orange') { bg = '#fef7e0'; color = '#b06000'; fw = 'bold'; }
+    else if (type === 'white') { bg = '#f1f3f4'; color = '#5f6368'; fw = 'bold'; }
+    else if (type === 'total') { bg = '#e8eaed'; color = '#202124'; fw = 'bold'; }
+    
+    return (
+      <span style={{ backgroundColor: bg, padding: '4px 10px', borderRadius: '12px', color: color, fontWeight: fw }}>
+        {val}
+      </span>
+    );
+  };
 
   return (
     <div className="dashboard">
@@ -205,38 +232,66 @@ export default function Dashboard() {
 
           <div className="card">
             <div className="card-header bg-gray-light font-bold">DOCUMENTOS RECEBIDOS</div>
-            <table className="w-full" style={{ borderCollapse: 'collapse', fontSize: '0.95rem' }}>
-              <tbody>
-                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
-                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Relat. Atividade Sinodais</td>
-                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{relatAtivSinodais}</span></td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
-                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Relat. de Estat. Sinodais</td>
-                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{relatEstatSinodais}</span></td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
-                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Livro de Atas</td>
-                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{livroAtas}</span></td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
-                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Consultas</td>
-                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{consultas}</span></td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
-                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Propostas</td>
-                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{propostas}</span></td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
-                  <td style={{ padding: '12px 16px', color: '#3c4043' }}>Indicação HPP</td>
-                  <td style={{ padding: '12px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: 'bold' }}>{indHpp}</span></td>
-                </tr>
-                <tr style={{ borderTop: '2px solid #dadce0', backgroundColor: '#f8f9fa' }}>
-                  <td style={{ padding: '14px 16px', fontWeight: 'bold', color: '#202124' }}>TOTAL</td>
-                  <td style={{ padding: '14px 16px', textAlign: 'right' }}><span style={{ backgroundColor: '#e8eaed', padding: '4px 12px', borderRadius: '16px', color: '#202124', fontWeight: 'bold' }}>{totalDocumentos}</span></td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="overflow-x-auto" style={{ padding: '0.5rem' }}>
+              <table className="w-full" style={{ borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #e0e0e0', color: '#5f6368', textAlign: 'center', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: '600' }}>Documento</th>
+                    <th style={{ padding: '12px 4px', fontWeight: '600' }}>Não Entregue</th>
+                    <th style={{ padding: '12px 4px', fontWeight: '600' }}>Entregue</th>
+                    <th style={{ padding: '12px 4px', fontWeight: '600' }}>Reenvio</th>
+                    <th style={{ padding: '12px 4px', fontWeight: '600' }}>Não Precisa</th>
+                    <th style={{ padding: '12px 4px', fontWeight: '600' }}>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Relat. Atividade Sinodais</td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoEntregue} type="red" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.entregue} type="green" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.reenvio} type="orange" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoPrecisa} type="white" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.total} type="total" /></td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Relat. de Estat. Sinodais</td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.naoEntregue} type="red" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.entregue} type="green" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.reenvio} type="orange" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.naoPrecisa} type="white" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.total} type="total" /></td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Livro de Atas</td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.naoEntregue} type="red" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.entregue} type="green" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.reenvio} type="orange" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.naoPrecisa} type="white" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.total} type="total" /></td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Consultas</td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={4}></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={consultas} type="total" /></td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Propostas</td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={4}></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={propostas} type="total" /></td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Indicação HPP</td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={4}></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={indHpp} type="total" /></td>
+                  </tr>
+                  <tr style={{ borderTop: '2px solid #dadce0', backgroundColor: '#f8f9fa' }}>
+                    <td style={{ padding: '14px 16px', fontWeight: 'bold', color: '#202124', textAlign: 'left' }}>TOTAL (Entregues + Avulsos)</td>
+                    <td colSpan={4}></td>
+                    <td style={{ padding: '14px 4px', textAlign: 'center' }}><Badge val={ativ.entregue + estat.entregue + atas.entregue + consultas + propostas + indHpp} type="total" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
         </div>
