@@ -242,8 +242,7 @@ export default function PainelGeral() {
     <div className="painel-geral-page">
       <div className="page-header">
         <div>
-          <h1 className="page-title">Painel Geral (Planilha)</h1>
-          <p className="page-subtitle">Visão consolidada estilo planilha Excel/Google Sheets</p>
+          <h1 className="page-title">Painel Geral</h1>
         </div>
       </div>
 
