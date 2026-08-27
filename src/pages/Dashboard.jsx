@@ -298,7 +298,7 @@ export default function Dashboard() {
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={indHpp} type="total" /></td>
                   </tr>
                   <tr style={{ borderTop: '2px solid #dadce0', backgroundColor: '#f8f9fa' }}>
-                    <td style={{ padding: '14px 16px', fontWeight: 'bold', color: '#202124', textAlign: 'left' }}>TOTAL (Entregues + Reenvio + Avulsos)</td>
+                    <td style={{ padding: '14px 16px', fontWeight: 'bold', color: '#202124', textAlign: 'left', whiteSpace: 'nowrap' }}>TOTAL (Entregues + Reenvio + Avulsos)</td>
                     <td colSpan={5}></td>
                     <td style={{ padding: '14px 4px', textAlign: 'center' }}><Badge val={ativ.entregue + estat.entregue + atas.entregue + ativ.reenvio + estat.reenvio + atas.reenvio + consultas + propostas + indHpp} type="total" /></td>
                   </tr>
