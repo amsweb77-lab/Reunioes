@@ -231,11 +231,11 @@ export default function Dashboard() {
           </div>
 
           <div className="card">
-            <div className="card-header bg-gray-light font-bold">DOCUMENTOS RECEBIDOS</div>
+            <div className="card-header bg-gray-light font-bold">DOCUMENTOS</div>
             <div className="overflow-x-auto" style={{ padding: '0.5rem' }}>
               <table className="w-full" style={{ borderCollapse: 'collapse', fontSize: '0.9rem' }}>
                 <thead>
-                  <tr style={{ borderBottom: '2px solid #e0e0e0', color: '#5f6368', textAlign: 'center', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <tr style={{ borderBottom: '2px solid #e0e0e0', color: '#5f6368', textAlign: 'center', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
                     <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: '600' }}>Documento</th>
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Não Entregue</th>
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Entregue</th>
