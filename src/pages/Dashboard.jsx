@@ -191,19 +191,19 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <tr className="table-row-hover" style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043' }}>Confederações Sinodais</td>
                     <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: '500' }}>{confedAtivas}</span></td>
                     <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e8f0fe', padding: '4px 10px', borderRadius: '12px', color: '#1967d2', fontWeight: 'bold' }}>{confedsConfirmados}</span></td>
                     <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e6f4ea', padding: '4px 10px', borderRadius: '12px', color: '#137333', fontWeight: 'bold' }}>{presentesSinodais}</span></td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <tr className="table-row-hover" style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043' }}>Diretoria</td>
                     <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: '500' }}>{totalDiretoria}</span></td>
                     <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e8f0fe', padding: '4px 10px', borderRadius: '12px', color: '#1967d2', fontWeight: 'bold' }}>{diretoriaConfirmados}</span></td>
                     <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e6f4ea', padding: '4px 10px', borderRadius: '12px', color: '#137333', fontWeight: 'bold' }}>{presentesDiretoria}</span></td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <tr className="table-row-hover" style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043' }}>Secretários de Ativ.</td>
                     <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#f1f3f4', padding: '4px 10px', borderRadius: '12px', color: '#5f6368', fontWeight: '500' }}>{totalSecretarios}</span></td>
                     <td style={{ padding: '12px 8px', textAlign: 'center' }}><span style={{ backgroundColor: '#e8f0fe', padding: '4px 10px', borderRadius: '12px', color: '#1967d2', fontWeight: 'bold' }}>{secretariosConfirmados}</span></td>
@@ -246,7 +246,7 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <tr className="table-row-hover" style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Relat. Atividade Sinodais</td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoEntregue} type="red" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.entregue} type="green" /></td>
@@ -255,7 +255,7 @@ export default function Dashboard() {
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoPrecisa} type="white" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.total} type="total" /></td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <tr className="table-row-hover" style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Relat. de Estat. Sinodais</td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.naoEntregue} type="red" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.entregue} type="green" /></td>
@@ -264,7 +264,7 @@ export default function Dashboard() {
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.naoPrecisa} type="white" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.total} type="total" /></td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <tr className="table-row-hover" style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Livro de Atas</td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.naoEntregue} type="red" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.entregue} type="green" /></td>
@@ -282,17 +282,17 @@ export default function Dashboard() {
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><span style={{ color: '#dadce0' }}>-</span></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><span style={{ color: '#dadce0' }}>-</span></td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <tr className="table-row-hover" style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Consultas</td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={5}></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={consultas} type="total" /></td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <tr className="table-row-hover" style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Propostas</td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={5}></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={propostas} type="total" /></td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
+                  <tr className="table-row-hover" style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Indicação HPP</td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={5}></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={indHpp} type="total" /></td>
@@ -316,7 +316,7 @@ export default function Dashboard() {
             <div className="card-header">
               <h3 className="font-bold flex items-center gap-2"><Users size={18} className="text-primary"/> Proporção de Inscritos vs Presentes por Região</h3>
             </div>
-            <div className="chart-container" style={{ height: 350 }}>
+            <div className="chart-container" style={{ height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={presencaPorRegiao} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
@@ -336,16 +336,16 @@ export default function Dashboard() {
             <div className="card-header">
               <h3 className="font-bold flex items-center gap-2"><PieChartIcon size={18} className="text-primary"/> Proporção de Documentos Recebidos</h3>
             </div>
-            <div className="chart-container" style={{ height: 320 }}>
+            <div className="chart-container" style={{ height: 350 }}>
               {docChartData.some(d => d.value > 0) ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={docChartData}
-                      cx="40%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={100}
+                      cx="50%"
+                      cy="45%"
+                      innerRadius={70}
+                      outerRadius={110}
                       paddingAngle={2}
                       dataKey="value"
                     >
@@ -354,7 +354,7 @@ export default function Dashboard() {
                       ))}
                     </Pie>
                     <RechartsTooltip />
-                    <Legend layout="vertical" verticalAlign="middle" align="right" wrapperStyle={{ fontSize: '12px' }}/>
+                    <Legend layout="horizontal" verticalAlign="bottom" align="center" wrapperStyle={{ fontSize: '12px', paddingTop: '15px' }}/>
                   </PieChart>
                 </ResponsiveContainer>
               ) : (

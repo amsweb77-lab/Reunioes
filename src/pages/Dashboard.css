@@ -7,20 +7,40 @@
 .dashboard-grid {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 2rem;
+  gap: 24px;
   align-items: start;
 }
 
-@media (max-width: 1200px) {
-  .dashboard-grid {
-    grid-template-columns: 1.1fr 0.9fr;
-  }
-}
-
-@media (max-width: 1024px) {
+@media (max-width: 1400px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 1px solid #eaeaea;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.table-row-hover {
+  transition: background-color 0.2s ease;
+}
+
+.table-row-hover:hover {
+  background-color: #f8f9fa;
 }
 
 .bg-gray-light {
