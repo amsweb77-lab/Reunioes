@@ -240,7 +240,7 @@ export default function Dashboard() {
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Não Entregue</th>
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Entregue</th>
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Reenvio</th>
-                    <th style={{ padding: '12px 4px', fontWeight: '600' }}>Total Doc. Pendente</th>
+                    <th style={{ padding: '12px 4px', fontWeight: '600' }}>T.Pendentes</th>
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Não Precisa</th>
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Total</th>
                   </tr>
