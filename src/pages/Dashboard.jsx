@@ -269,6 +269,14 @@ export default function Dashboard() {
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.naoPrecisa} type="white" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.total} type="total" /></td>
                   </tr>
+                  <tr style={{ borderTop: '1px solid #dadce0', backgroundColor: '#fcfcfc' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: '600', color: '#202124', textAlign: 'left' }}>SUB-TOTAL</td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoEntregue + estat.naoEntregue + atas.naoEntregue} type="red" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.entregue + estat.entregue + atas.entregue} type="green" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.reenvio + estat.reenvio + atas.reenvio} type="orange" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoPrecisa + estat.naoPrecisa + atas.naoPrecisa} type="white" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.total + estat.total + atas.total} type="total" /></td>
+                  </tr>
                   <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Consultas</td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={4}></td>
