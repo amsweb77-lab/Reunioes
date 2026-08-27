@@ -181,7 +181,7 @@ export default function Dashboard() {
           <div className="card mb-4">
             <div className="card-header bg-gray-light font-bold">PANORAMA</div>
             <div className="overflow-x-auto" style={{ padding: '0.5rem' }}>
-              <table className="w-full" style={{ borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+              <table className="w-full" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid #e0e0e0', color: '#5f6368', textAlign: 'center', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: '600' }}>Categoria</th>
@@ -233,7 +233,7 @@ export default function Dashboard() {
           <div className="card">
             <div className="card-header bg-gray-light font-bold">DOCUMENTOS</div>
             <div className="overflow-x-auto" style={{ padding: '0.5rem' }}>
-              <table className="w-full" style={{ borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+              <table className="w-full" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid #e0e0e0', color: '#5f6368', textAlign: 'center', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
                     <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: '600' }}>Documento</th>
@@ -303,11 +303,11 @@ export default function Dashboard() {
             <div className="card-header">
               <h3 className="font-bold flex items-center gap-2"><Users size={18} className="text-primary"/> Proporção de Inscritos vs Presentes por Região</h3>
             </div>
-            <div className="chart-container" style={{ height: 260 }}>
+            <div className="chart-container" style={{ height: 350 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={presencaPorRegiao} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                <BarChart data={presencaPorRegiao} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12}} />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 11, angle: -45, textAnchor: 'end'}} height={60} />
                   <YAxis axisLine={false} tickLine={false} />
                   <RechartsTooltip cursor={{fill: '#f5f5f5'}} />
                   <Legend />
@@ -323,7 +323,7 @@ export default function Dashboard() {
             <div className="card-header">
               <h3 className="font-bold flex items-center gap-2"><PieChartIcon size={18} className="text-primary"/> Proporção de Documentos Recebidos</h3>
             </div>
-            <div className="chart-container" style={{ height: 240 }}>
+            <div className="chart-container" style={{ height: 320 }}>
               {docChartData.some(d => d.value > 0) ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
