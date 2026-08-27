@@ -173,12 +173,10 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="dashboard-grid">
+            <div className="dashboard-stack" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         
-        {/* COLUNA ESQUERDA: Tabelas Clássicas */}
-        <div className="dashboard-left">
-          
-          <div className="card mb-4">
+        {/* PANORAMA */}
+        <div className="card">
             <div className="card-header bg-gray-light font-bold">PANORAMA</div>
             <div className="overflow-x-auto" style={{ padding: '0.5rem' }}>
               <table className="w-full" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
@@ -230,7 +228,29 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="card">
+        {/* GR�FICO 1 */}
+        <div className="card chart-card">
+            <div className="card-header">
+              <h3 className="font-bold flex items-center gap-2"><Users size={18} className="text-primary"/> Proporção de Inscritos vs Presentes por Região</h3>
+            </div>
+            <div className="chart-container" style={{ height: 400 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={presencaPorRegiao} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 11, angle: -45, textAnchor: 'end'}} height={60} />
+                  <YAxis axisLine={false} tickLine={false} />
+                  <RechartsTooltip cursor={{fill: '#f5f5f5'}} />
+                  <Legend />
+                  <Bar dataKey="Total" fill="#e0e0e0" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Inscritos" fill="#0b57d0" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Presentes" fill="#38761d" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+        {/* DOCUMENTOS */}
+        <div className="card">
             <div className="card-header bg-gray-light font-bold">DOCUMENTOS</div>
             <div className="overflow-x-auto" style={{ padding: '0.5rem' }}>
               <table className="w-full" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
@@ -307,32 +327,8 @@ export default function Dashboard() {
             </div>
           </div>
 
-        </div>
-
-        {/* COLUNA DIREITA: Gráficos */}
-        <div className="dashboard-right">
-          
-          <div className="card mb-4 chart-card">
-            <div className="card-header">
-              <h3 className="font-bold flex items-center gap-2"><Users size={18} className="text-primary"/> Proporção de Inscritos vs Presentes por Região</h3>
-            </div>
-            <div className="chart-container" style={{ height: 400 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={presencaPorRegiao} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 11, angle: -45, textAnchor: 'end'}} height={60} />
-                  <YAxis axisLine={false} tickLine={false} />
-                  <RechartsTooltip cursor={{fill: '#f5f5f5'}} />
-                  <Legend />
-                  <Bar dataKey="Total" fill="#e0e0e0" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="Inscritos" fill="#0b57d0" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="Presentes" fill="#38761d" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          <div className="card chart-card">
+        {/* GR�FICO 2 */}
+        <div className="card chart-card">
             <div className="card-header">
               <h3 className="font-bold flex items-center gap-2"><PieChartIcon size={18} className="text-primary"/> Proporção de Documentos Recebidos</h3>
             </div>
@@ -365,7 +361,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-        </div>
       </div>
     </div>
   );
