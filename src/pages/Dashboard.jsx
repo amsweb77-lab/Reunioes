@@ -240,6 +240,7 @@ export default function Dashboard() {
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Não Entregue</th>
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Entregue</th>
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Reenvio</th>
+                    <th style={{ padding: '12px 4px', fontWeight: '600' }}>Total Doc. Pendente</th>
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Não Precisa</th>
                     <th style={{ padding: '12px 4px', fontWeight: '600' }}>Total</th>
                   </tr>
@@ -250,6 +251,7 @@ export default function Dashboard() {
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoEntregue} type="red" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.entregue} type="green" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.reenvio} type="orange" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoEntregue + ativ.entregue + ativ.reenvio} type="total" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoPrecisa} type="white" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.total} type="total" /></td>
                   </tr>
@@ -258,6 +260,7 @@ export default function Dashboard() {
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.naoEntregue} type="red" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.entregue} type="green" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.reenvio} type="orange" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.naoEntregue + estat.entregue + estat.reenvio} type="total" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.naoPrecisa} type="white" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={estat.total} type="total" /></td>
                   </tr>
@@ -266,6 +269,7 @@ export default function Dashboard() {
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.naoEntregue} type="red" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.entregue} type="green" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.reenvio} type="orange" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.naoEntregue + atas.entregue + atas.reenvio} type="total" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.naoPrecisa} type="white" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={atas.total} type="total" /></td>
                   </tr>
@@ -274,27 +278,28 @@ export default function Dashboard() {
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoEntregue + estat.naoEntregue + atas.naoEntregue} type="red" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.entregue + estat.entregue + atas.entregue} type="green" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.reenvio + estat.reenvio + atas.reenvio} type="orange" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoEntregue + estat.naoEntregue + atas.naoEntregue + ativ.entregue + estat.entregue + atas.entregue + ativ.reenvio + estat.reenvio + atas.reenvio} type="total" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><span style={{ color: '#dadce0' }}>-</span></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><span style={{ color: '#dadce0' }}>-</span></td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Consultas</td>
-                    <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={4}></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={5}></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={consultas} type="total" /></td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Propostas</td>
-                    <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={4}></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={5}></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={propostas} type="total" /></td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Indicação HPP</td>
-                    <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={4}></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }} colSpan={5}></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={indHpp} type="total" /></td>
                   </tr>
                   <tr style={{ borderTop: '2px solid #dadce0', backgroundColor: '#f8f9fa' }}>
                     <td style={{ padding: '14px 16px', fontWeight: 'bold', color: '#202124', textAlign: 'left' }}>TOTAL (Entregues + Reenvio + Avulsos)</td>
-                    <td colSpan={4}></td>
+                    <td colSpan={5}></td>
                     <td style={{ padding: '14px 4px', textAlign: 'center' }}><Badge val={ativ.entregue + estat.entregue + atas.entregue + ativ.reenvio + estat.reenvio + atas.reenvio + consultas + propostas + indHpp} type="total" /></td>
                   </tr>
                 </tbody>
