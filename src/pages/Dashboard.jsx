@@ -274,8 +274,8 @@ export default function Dashboard() {
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.naoEntregue + estat.naoEntregue + atas.naoEntregue} type="red" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.entregue + estat.entregue + atas.entregue} type="green" /></td>
                     <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={ativ.reenvio + estat.reenvio + atas.reenvio} type="orange" /></td>
-                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={0} type="white" /></td>
-                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><Badge val={0} type="total" /></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><span style={{ color: '#dadce0' }}>-</span></td>
+                    <td style={{ padding: '12px 4px', textAlign: 'center' }}><span style={{ color: '#dadce0' }}>-</span></td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid #f1f3f4' }}>
                     <td style={{ padding: '12px 16px', fontWeight: '500', color: '#3c4043', textAlign: 'left' }}>Consultas</td>
