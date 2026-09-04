@@ -16,6 +16,12 @@ export default function PainelGeral() {
   const [tableData, setTableData] = useState([]);
   const [diretoriaData, setDiretoriaData] = useState([]);
   const [secretariosData, setSecretariosData] = useState([]);
+  const [relatoresData, setRelatoresData] = useState([
+    { id: 'rel_1', n: 1, nome: 'Abilio dos Santos Filho', cargo: 'Diplomacia', confirmou: true, presente: false },
+    { id: 'rel_2', n: 2, nome: 'Weslley Souza do Nascimento', cargo: 'Estatística', confirmou: true, presente: false },
+    { id: 'rel_3', n: 3, nome: 'Josafá', cargo: 'Estatística', confirmou: true, presente: false },
+    { id: 'rel_4', n: 4, nome: 'Magno Fonseca de Holanda', cargo: 'Tesouraria', confirmou: true, presente: false }
+  ]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -579,22 +585,33 @@ export default function PainelGeral() {
                 <td colSpan="3" className="sticky-col bg-gray-light border-r"></td>
                 <td colSpan="10" className="header-cell text-center font-bold" style={{ textTransform: 'uppercase' }}>RELATORES XVI CONGRESSO</td>
               </tr>
-              {[
-                { n: 1, nome: 'Abilio dos Santos Filho', cargo: 'Diplomacia' },
-                { n: 2, nome: 'Weslley Souza do Nascimento', cargo: 'Estatística' },
-                { n: 3, nome: 'Josafá', cargo: 'Estatística' },
-                { n: 4, nome: 'Magno Fonseca de Holanda', cargo: 'Tesouraria' }
-              ].map((rel, index) => (
-                <tr key={`relator-${index}`}>
-                  <td className="sticky-col text-center border-r">{rel.n}</td>
+              {relatoresData.map((row) => (
+                <tr key={row.id}>
+                  <td className="sticky-col text-center border-r">{row.n}</td>
                   <td className="sticky-col border-r"></td>
                   <td className="sticky-col border-r"></td>
-                  <td className="border-r">{rel.nome}</td>
-                  <td className="border-r">{rel.cargo}</td>
+                  <td className="border-r">{row.nome}</td>
+                  <td className="border-r">{row.cargo}</td>
                   <td className="text-center border-r font-bold">
-                    <span className="text-green-dark">Sim</span>
+                    <select 
+                      className={`select-status ${row.confirmou ? 'text-green-dark' : 'text-danger'}`}
+                      value={row.confirmou ? 'Sim' : 'Não'}
+                      onChange={(e) => handleExtraChange(setRelatoresData, row.id, 'confirmou', e.target.value === 'Sim')}
+                    >
+                      <option value="Sim">Sim</option>
+                      <option value="Não">Não</option>
+                    </select>
                   </td>
-                  <td className="text-center border-r font-bold"></td>
+                  <td className="text-center border-r font-bold">
+                    <select 
+                      className={`select-status ${row.presente ? 'text-green-dark' : 'text-danger'}`}
+                      value={row.presente ? 'Sim' : 'Não'}
+                      onChange={(e) => handleExtraChange(setRelatoresData, row.id, 'presente', e.target.value === 'Sim')}
+                    >
+                      <option value="Sim">Sim</option>
+                      <option value="Não">Não</option>
+                    </select>
+                  </td>
                   <td className="border-r"></td>
                   <td className="border-r"></td>
                   <td className="border-r"></td>
