@@ -574,6 +574,36 @@ export default function PainelGeral() {
                 </>
               )}
 
+              {/* SECTION: RELATORES */}
+              <tr className="section-header-row" style={{ backgroundColor: '#e0e0e0', borderTop: '2px solid #ccc', borderBottom: '2px solid #ccc' }}>
+                <td colSpan={13} className="font-bold text-center" style={{ padding: '8px', fontSize: '13px', textTransform: 'uppercase' }}>
+                  RELATORES XVI CONGRESSO
+                </td>
+              </tr>
+              {[
+                { n: 1, nome: 'Abilio dos Santos Filho', cargo: 'Diplomacia' },
+                { n: 2, nome: 'Weslley Souza do Nascimento', cargo: 'Estatística' },
+                { n: 3, nome: 'Josafá', cargo: 'Estatística' },
+                { n: 4, nome: 'Magno Fonseca de Holanda', cargo: 'Tesouraria' }
+              ].map((rel, i) => (
+                <tr key={`relator-${i}`} className="spreadsheet-row hoverable">
+                  <td className="border-r" style={{ backgroundColor: i % 2 === 0 ? '#e6f4ea' : 'transparent' }}></td>
+                  <td className="border-r" style={{ backgroundColor: i % 2 === 0 ? '#e6f4ea' : 'transparent' }}></td>
+                  <td className="text-right border-r font-bold" style={{ backgroundColor: i % 2 === 0 ? '#e6f4ea' : 'transparent', paddingRight: '8px' }}>
+                    {rel.n}
+                  </td>
+                  <td className="border-r px-2">{rel.nome}</td>
+                  <td className="border-r px-2">{rel.cargo}</td>
+                  <td className="text-center border-r px-2">sim</td>
+                  <td className="border-r" style={{ backgroundColor: i % 2 === 0 ? '#e6f4ea' : 'transparent' }}></td>
+                  <td className="border-r"></td>
+                  <td className="border-r"></td>
+                  <td className="border-r"></td>
+                  <td className="border-r"></td>
+                  <td className="border-r"></td>
+                  <td className="border-r"></td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
